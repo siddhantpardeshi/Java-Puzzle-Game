@@ -15,10 +15,12 @@ public class Segment {
 		pos = new Point(((ID <= 2)? ID:(ID <= 5)? (ID-3):(ID-6)), (int) Math.ceil((ID/3)));
 	}
 	
+	//If p lies within the segment (if the segment got clicked) returns true
 	public boolean hitten(Point p) {
 		return new Rectangle(pos.x*segmentSize, pos.y*segmentSize, segmentSize, segmentSize).contains(p);
 	}
 	
+	//Move the Segment to a new position if possible
 	public boolean move(Point p) {
 		boolean isPossible = false;
 		if (p.x == pos.x+1 && p.y == pos.y) isPossible = true;
