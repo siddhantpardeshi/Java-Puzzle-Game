@@ -13,19 +13,23 @@ public class Puzzle extends JPanel {
 	
 	public Puzzle(Image img) {
 		this.img = img;
+		//init 9 segments
 		segments = new Segment[9];
 		int segmentSize = img.getWidth(null)/3;
 		for (int i = 0; i != segments.length; i++) {
+			//Pass the Segment the instance of the Game, its position (by the index) and its size
 			segments[i] = new Segment(this, i, segmentSize);
 		}
 	}
 	
 	public void start() {
 		started = true;
+		//remove segment 8 (the one in the bottom right)
 		segments[8].isEmpty = true;
 		mix.start();
 	}
 	
+	//This Thread shuffles the Segments by switching one of the neighboring segments of the empty one with the empty one
 	Thread mix = new Thread(new Runnable() {
 		public void run() {
 			mixing = true;
@@ -52,6 +56,7 @@ public class Puzzle extends JPanel {
 		}
 	});
 	
+	//Check if the user clicked onto a seg,emt amd of possible move it onto the empty one
 	public void onClick(MouseEvent e) {
 		for (Segment s : segments) {
 			if (s.hitten(e.getPoint())) {
@@ -59,7 +64,7 @@ public class Puzzle extends JPanel {
 				if (s.move(segments[8].getPosition())) {
 					segments[8].setPosition(tmp);
 					
-					
+					//Check if user is done by comparing it's position with the one it should have
 					boolean done = true;
 					for (int i = 0; i != 9; i++) {
 						if (segments[i].getPosition().x == ((i <= 2)? i:(i <= 5)? (i-3):(i-6)) && segments[i].getPosition().y == (int) Math.ceil((i/3))) {
